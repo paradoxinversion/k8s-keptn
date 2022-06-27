@@ -1,18 +1,17 @@
-  --- 
-  apiVersion: apps/v1
-  kind: Deployment
-  metadata:
-    name: demo-svc
-  spec:
-    replicas: {{ .Values.replicaCount }}
-    selector:
-      matchLabels:
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: demo-svc
+spec:
+  replicas: { { .Values.replicaCount } }
+  selector:
+    matchLabels:
+      app: demo-svc
+  template:
+    metadata:
+      labels:
         app: demo-svc
-    template:
-      metadata: 
-        labels:
-          app: demo-svc
-      spec:
-        containers:
+    spec:
+      containers:
         - name: demo-svc
           image: "{{ .Values.image }}"

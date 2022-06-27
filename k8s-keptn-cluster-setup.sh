@@ -109,3 +109,8 @@ kubectl create configmap -n keptn ingress-config --from-literal=ingress_hostname
 
 echo "Restarting helm service"
 kubectl delete pod -n keptn -lapp.kubernetes.io/name=helm-service
+
+KEPTN_API_TOKEN=$(kubectl get secret keptn-api-token -n keptn -ojsonpath={.data.keptn-api-token} | base64 --decode)
+keptn auth --endpoint=$KEPTN_ENDPOINT --api-token=$KEPTN_API_TOKEN
+
+kubectl get secret -n keptn bridge-credentials -o jsonpath="{.data.BASIC_AUTH_PASSWORD}" | base64 --decode

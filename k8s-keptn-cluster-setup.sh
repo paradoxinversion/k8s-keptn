@@ -11,6 +11,13 @@ curl -LO https://dl.k8s.io/release/v$K8S_VERSION/bin/linux/amd64/kubectl
 echo "Installing kubectl version ${K8S_VERSION}"
 sudo install -o root -g root -m 0755 kubectl /usr/local/bin/kubectl
 
+# Install k3s cluster
+
+curl -sfL https://get.k3s.io | INSTALL_K3S_VERSION=v$K8S_VERSION+k3s1 K3S_KUBECONFIG_MODE="644" sh -s - --no-deploy=traefik
+export KUBECONFIG=/etc/rancher/k3s/k3s.yaml
+
+
+
 # Install helm CLI
 echo "Downloading Helm 3 installer"
 curl -fsSL -o get_helm.sh https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3

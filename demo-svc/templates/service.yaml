@@ -5,9 +5,9 @@ metadata:
 spec:
   type: ClusterIP
   ports:
-    - name: http
-      port: 8080
-      protocol: TCP
-      targetPort: http
-    selector:
-      app: demo-svc
+  - name: http
+    port: 8080
+    protocol: TCP
+    targetPort: http
+  selector:
+    app: demo-svc

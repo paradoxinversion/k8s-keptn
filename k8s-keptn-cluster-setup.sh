@@ -116,10 +116,16 @@ kubectl -n keptn delete secret bridge-credentials --ignore-not-found=true
 kubectl -n keptn delete pods --selector=app.kubernetes.io/name=bridge --wait
 
 # Install Prometheus
+kubectl create namespace monitoring
+helm repo add prometheus-community https://prometheus-community.github.io/helm-charts
+helm install prometheus prometheus-community/prometheus --namespace monitoring
 
 helm upgrade --install -n keptn prometheus-service https://github.com/keptn-contrib/prometheus-service/releases/download/0.8.0/prometheus-service-0.8.0.tgz --reuse-values
 kubectl -n monitoring apply -f https://raw.githubusercontent.com/keptn-contrib/prometheus-service/0.8.0/deploy/role.yaml
 keptn configure monitoring prometheus --project $PROJECTNAME --service $SERVICENAME
+keptn add-resource --project $PROJECTNAME --stage=staging --service=carts --resource ./configs/slo-quality-gates.yaml --resourceUri=slo.yaml
+keptn add-resource --project $PROJECTNAME --stage=hardening --service $SERVICENAME --resource ./configs/sli-config-prometheus.yaml --resourceUri=prometheus/sli.yaml
+
 
 git clone https://github.com/paradoxinversion/containerized-node-app-helm-chart.git
 helm package containerized-node-app-helm-chart

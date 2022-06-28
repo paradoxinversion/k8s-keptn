@@ -21,7 +21,7 @@ We'll be running commands in [Powershell](https://docs.microsoft.com/en-us/power
 
 The following steps were taken and code was created on a Windows 10 PC with the latest version of Multipass as of 6/28/2022.
 
-## `create-vm.ps1`
+## create-vm.ps1
 
 This script handles creation of a multipass VM with baseline resources required for a Keptn installation. VM is launched with: the name k8s, 4 CPUs, 16G of memory, 20G of disk space on a bridged ethernet connection. 
 
@@ -89,6 +89,8 @@ curl -L https://istio.io/downloadIstio | ISTIO_VERSION=$ISTIO_VERSION TARGET_ARC
 ./istio-$ISTIO_VERSION/bin/istioctl install -y
 sleep 10s
 ```
+
+> Without Istio, we'll be unable to make multi-stage  deployments.
 
 #### __Download and install Keptn CLI, Install Keptn into the cluster__
 

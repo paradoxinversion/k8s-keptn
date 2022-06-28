@@ -34,7 +34,7 @@ echo "Running ./get_helm"
 # Install Istio CLI
 echo "Downloading Istio CLI version ${ISTIO_VERSION}, for architecture ${LINUX_ARCHITECTURE}"
 curl -L https://istio.io/downloadIstio | ISTIO_VERSION=$ISTIO_VERSION TARGET_ARCH=$LINUX_ARCHITECTURE sh -
-sudo echo export ISTIOCTL=~/.istio-$ISTIO_VERSION/bin/istioctl >> $BASHRC
+sudo echo export ISTIOCTL=./istio-$ISTIO_VERSION/bin/istioctl >> $BASHRC
 source $BASHRC
 
 echo "Installing Istio into the cluster with default profile"

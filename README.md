@@ -177,11 +177,8 @@ Next, we disable the login for Keptn's bridge, for ease of use. While we want a 
 ```sh
 KEPTN_API_TOKEN=$(kubectl get secret keptn-api-token -n keptn -ojsonpath={.data.keptn-api-token} | base64 --decode)
 KEPTN_ENDPOINT=http://$INGRESS_HOST.nip.io/api
-
 keptn auth --endpoint=$KEPTN_ENDPOINT --api-token=$KEPTN_API_TOKEN
-
 kubectl -n keptn delete secret bridge-credentials --ignore-not-found=true
-
 kubectl -n keptn delete pods --selector=app.kubernetes.io/name=bridge --wait
 ```
 
@@ -207,3 +204,11 @@ keptn create service $SERVICENAME --project=$PROJECTNAME
 keptn add-resource --project=$PROJECTNAME --service=$SERVICENAME --all-stages --resource=$HELM_CHART.tgz --resourceUri=helm/$SERVICENAME.tgz
 keptn trigger delivery --project $PROJECTNAME --service $SERVICENAME --image docker.io/paradoxinversion/containerized-node-app
 ```
+
+# Support
+
+__Please note, there will likely be limited support for this repository. It's intended to make my personal and professional life easier, while being a starting point for other folks. Feel free to fork, but don't expect requests to be managed in a timely fashion__
+
+# Acknlowedgements
+
+Keptn's examples and demos have been a great help pulling together the scripts needed to make a one-shot setup.

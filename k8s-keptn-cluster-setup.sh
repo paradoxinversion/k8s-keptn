@@ -115,6 +115,12 @@ kubectl -n keptn delete secret bridge-credentials --ignore-not-found=true
 
 kubectl -n keptn delete pods --selector=app.kubernetes.io/name=bridge --wait
 
+# Install Prometheus
+
+helm upgrade --install -n keptn prometheus-service https://github.com/keptn-contrib/prometheus-service/releases/download/0.8.0/prometheus-service-0.8.0.tgz --reuse-values
+kubectl -n monitoring apply -f https://raw.githubusercontent.com/keptn-contrib/prometheus-service/0.8.0/deploy/role.yaml
+keptn configure monitoring prometheus --project $PROJECTNAME --service $SERVICENAME
+
 git clone https://github.com/paradoxinversion/containerized-node-app-helm-chart.git
 helm package containerized-node-app-helm-chart
 PROJECTNAME=demo

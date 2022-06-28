@@ -16,8 +16,6 @@ sudo install -o root -g root -m 0755 kubectl /usr/local/bin/kubectl
 curl -sfL https://get.k3s.io | INSTALL_K3S_VERSION=v$K8S_VERSION+k3s1 K3S_KUBECONFIG_MODE="644" sh -s - --no-deploy=traefik
 export KUBECONFIG=/etc/rancher/k3s/k3s.yaml
 
-
-
 # Install helm CLI
 echo "Downloading Helm 3 installer"
 curl -fsSL -o get_helm.sh https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3
@@ -114,3 +112,5 @@ KEPTN_API_TOKEN=$(kubectl get secret keptn-api-token -n keptn -ojsonpath={.data.
 keptn auth --endpoint=$KEPTN_ENDPOINT --api-token=$KEPTN_API_TOKEN
 
 kubectl get secret -n keptn bridge-credentials -o jsonpath="{.data.BASIC_AUTH_PASSWORD}" | base64 --decode
+
+echo "Setup is complete, make k3s available on the command line via export KUBECONFIG=/etc/rancher/k3s/k3s.yaml"

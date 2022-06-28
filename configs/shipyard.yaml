@@ -12,3 +12,13 @@ spec:
               properties:
                 deploymentstrategy: "direct"
             - name: "release"
+    - name: "production"
+      sequences:
+      - name: "delivery"
+        triggeredOn:
+          - event: "dev.delivery.finished"
+        tasks: 
+        - name: "deployment"
+          properties:
+            deploymentstrategy: "blue_green_service"
+        - name: "release"

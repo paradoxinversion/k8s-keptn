@@ -20,7 +20,7 @@ spec:
         tasks: 
         - name: "deployment"
           properties:
-              deploymentstrategy: "blue_green_svc"
+              deploymentstrategy: "blue_green_service"
         - name: evaluation
         - name: "release"
     - name: "production"

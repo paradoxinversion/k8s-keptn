@@ -27,7 +27,6 @@ echo "Running ./get_helm"
 # Install Istio CLI
 echo "Downloading Istio CLI version ${ISTIO_VERSION}, for architecture ${LINUX_ARCHITECTURE}"
 curl -L https://istio.io/downloadIstio | ISTIO_VERSION=$ISTIO_VERSION TARGET_ARCH=$LINUX_ARCHITECTURE sh -
-
 echo "Installing Istio into the cluster with default profile"
 ./istio-$ISTIO_VERSION/bin/istioctl install -y
 echo "Sleeping for 10 seconds"
@@ -109,6 +108,7 @@ echo "Restarting helm service"
 kubectl delete pod -n keptn -lapp.kubernetes.io/name=helm-service
 
 KEPTN_API_TOKEN=$(kubectl get secret keptn-api-token -n keptn -ojsonpath={.data.keptn-api-token} | base64 --decode)
+KEPTN_ENDPOINT=http://$INGRESS_HOST.nip.io/api
 keptn auth --endpoint=$KEPTN_ENDPOINT --api-token=$KEPTN_API_TOKEN
 
 kubectl -n keptn delete secret bridge-credentials --ignore-not-found=true

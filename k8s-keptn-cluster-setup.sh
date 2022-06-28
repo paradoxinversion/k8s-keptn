@@ -111,6 +111,17 @@ kubectl delete pod -n keptn -lapp.kubernetes.io/name=helm-service
 KEPTN_API_TOKEN=$(kubectl get secret keptn-api-token -n keptn -ojsonpath={.data.keptn-api-token} | base64 --decode)
 keptn auth --endpoint=$KEPTN_ENDPOINT --api-token=$KEPTN_API_TOKEN
 
-kubectl get secret -n keptn bridge-credentials -o jsonpath="{.data.BASIC_AUTH_PASSWORD}" | base64 --decode
+kubectl -n keptn delete secret bridge-credentials --ignore-not-found=true
 
+kubectl -n keptn delete pods --selector=app.kubernetes.io/name=bridge --wait
+
+git clone https://github.com/paradoxinversion/containerized-node-app-helm-chart.git
+helm package containerized-node-app-helm-chart
+PROJECTNAME=demo
+SERVICENAME=demo-svc
+HELM_CHART=./demo-svc-0.1.0
+keptn create project $PROJECTNAME --shipyard="./configs/shipyard.yaml"
+keptn create service $SERVICENAME --project=$PROJECTNAME
+keptn add-resource --project=$PROJECTNAME --service=$SERVICENAME --all-stages --resource=$HELM_CHART.tgz --resourceUri=helm/$SERVICENAME.tgz
+keptn trigger delivery --project $PROJECTNAME --service $SERVICENAME --image docker.io/paradoxinversion/containerized-node-app
 echo "Setup is complete, make k3s available on the command line via export KUBECONFIG=/etc/rancher/k3s/k3s.yaml"

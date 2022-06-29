@@ -3,7 +3,7 @@
 # Set initial setup variables. We copy them here to .bashrc for easier reuse. Further env vars will be gathered and added to bashrc throughout the run of the script as necessary.
 BASHRC=~/.bashrc
 sudo echo export K8S_VERSION=1.20.4 >> $BASHRC
-sudo echo export KEPTN_VERSION=0.14.3 >> $BASHRC
+sudo echo export KEPTN_VERSION=0.14.1 >> $BASHRC
 sudo echo export ISTIO_VERSION=1.13.5 >> $BASHRC
 sudo echo export LINUX_ARCHITECTURE=x86_64 >> $BASHRC
 
@@ -47,7 +47,12 @@ echo "Downloading, running Keptn installer version ${KEPTN_VERSION}"
 curl -sL https://get.keptn.sh | KEPTN_VERSION=$KEPTN_VERSION bash
 
 echo "Installing Keptn into the cluster"
-keptn install --use-case=continuous-delivery
+# keptn install --use-case=continuous-delivery
+helm install keptn https://github.com/keptn/keptn/releases/download/$KEPTN_VERSION/keptn-$KEPTN_VERSION.tgz -n keptn --create-namespace --wait --set=continuous-delivery.enabled=true
+helm install jmeter-service https://github.com/keptn/keptn/releases/download/$KEPTN_VERSION/jmeter-service-$KEPTN_VERSION.tgz -n keptn --create-namespace --wait
+
+helm install helm-service https://github.com/keptn/keptn/releases/download/$KEPTN_VERSION/helm-service-$KEPTN_VERSION.tgz -n keptn --create-namespace --wait
+
 
 echo "Getting Istio Ingress info"
 sudo echo export INGRESS_HOST=$(kubectl -n istio-system get service istio-ingressgateway -o jsonpath='{.status.loadBalancer.ingress[0].ip}') >> $BASHRC

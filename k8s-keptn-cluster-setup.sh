@@ -1,6 +1,6 @@
 #!/bin/bash
-# Set initial setup variables. We copy them here to .bashrc for easier reuse. Further env vars will be gathered and added to bashrc throughout the run of the script as necessary.
 
+# Set initial setup variables. We copy them here to .bashrc for easier reuse. Further env vars will be gathered and added to bashrc throughout the run of the script as necessary.
 BASHRC=~/.bashrc
 sudo echo export K8S_VERSION=1.21.1 >> $BASHRC
 sudo echo export KEPTN_VERSION=0.15.1 >> $BASHRC
@@ -158,7 +158,6 @@ keptn add-resource --project $PROJECTNAME --stage=$PROMETHEUS_EVALUATION_STAGE -
 # Set up quality gate
 keptn add-resource --project $PROJECTNAME --stage=$PROMETHEUS_EVALUATION_STAGE --service=$SERVICENAME --resource ./configs/slo-quality-gates.yaml --resourceUri=slo.yaml
 
-
-
 keptn trigger delivery --project $PROJECTNAME --service $SERVICENAME --image docker.io/paradoxinversion/containerized-node-app
 echo "Setup is complete, make k3s available on the command line via export KUBECONFIG=/etc/rancher/k3s/k3s.yaml"
+echo "The Keptn endpoint can be found at $KEPTN_ENDPOINT"

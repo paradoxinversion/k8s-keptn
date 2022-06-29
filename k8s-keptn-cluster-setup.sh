@@ -142,7 +142,7 @@ keptn create service $SERVICENAME --project=$PROJECTNAME
 keptn add-resource --project=$PROJECTNAME --service=$SERVICENAME --all-stages --resource=$HELM_CHART.tgz --resourceUri=helm/$SERVICENAME.tgz
 
 # Install Prometheus
-sudo echo PROMETHEUS_VERSION=0.8.0 >> $BASHRC
+sudo echo PROMETHEUS_VERSION=0.8.1 >> $BASHRC
 sudo echo PROMETHEUS_EVALUATION_STAGE=hardening >> $BASHRC
 source $BASHRC
 

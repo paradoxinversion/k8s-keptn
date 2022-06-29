@@ -58,7 +58,7 @@ spec:
         - name: "release"
     - name: "rollback"
       triggeredOn: 
-        - event: "staging.delivery.finished"
+        - event: "production.delivery.finished"
           selector:
             match:
               result: "fail"
@@ -72,16 +72,3 @@ spec:
           properties:
             deploymentstrategy: "direct"
         - name: "release"
-    - name: "remediation"
-      triggeredOn:
-        - event: "production.remediation.finished"
-          selector:
-            match:
-              evaluation.result: "fail"
-      tasks:
-        - name: "get-action"
-        - name: "action"
-        - name: "evaluation"
-          triggeredAfter: "15m"
-          properties:
-            timeframe: "15m"

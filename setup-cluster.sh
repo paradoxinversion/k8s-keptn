@@ -2,9 +2,9 @@
 
 # Set initial setup variables. We copy them here to .bashrc for easier reuse. Further env vars will be gathered and added to bashrc throughout the run of the script as necessary.
 BASHRC=~/.bashrc
-sudo echo export K8S_VERSION=1.21.1 >> $BASHRC
-sudo echo export KEPTN_VERSION=0.15.1 >> $BASHRC
-sudo echo export ISTIO_VERSION=1.14.1 >> $BASHRC
+sudo echo export K8S_VERSION=1.20.4 >> $BASHRC
+sudo echo export KEPTN_VERSION=0.14.3 >> $BASHRC
+sudo echo export ISTIO_VERSION=1.13.5 >> $BASHRC
 sudo echo export LINUX_ARCHITECTURE=x86_64 >> $BASHRC
 
 source $BASHRC

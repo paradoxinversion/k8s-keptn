@@ -6,8 +6,8 @@ comparison:
   number_of_comparison_results: 1
 filter:
 objectives:
-  - sli: "response_time_p95"
-    displayName: "Response time P95"
+  - sli: "request_duration_p50"
+    displayName: "Request duration p50"
     key_sli: false
     pass:             # pass if (relative change <= 10% AND absolute value is < 600ms)
       - criteria:

@@ -6,7 +6,7 @@ spec:
   replicas: {{ .Values.replicaCount }}
   selector:
     matchLabels:
-      app: {{- include "demo-svc.fullname" . }}
+      app: demo-svc
   template:
     metadata:
       {{- with .Values.podAnnotations }}

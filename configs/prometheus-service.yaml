@@ -7,7 +7,7 @@ spec:
   ports:
     - port: 8080
       targetPort: 9090
-      NodePort: 30000
+      nodePort: 30000
   selector:
     app: prometheus-server
   

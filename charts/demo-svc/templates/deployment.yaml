@@ -1,7 +1,7 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ include "demo-svc.fullname" . }}
+  name: "demo-svc"
 spec:
   replicas: {{ .Values.replicaCount }}
   selector:
@@ -14,7 +14,7 @@ spec:
         {{- toYaml . | nindent 8 }}
       {{- end }}
       labels:
-        app: {{ include "demo-svc.fullname" . }}
+        app: "demo-svc"
         app.kubernetes.io/name: {{ .Values.keptn.service }}
         app.kubernetes.io/instance: "{{ .Values.keptn.service }}-{{ .Values.keptn.deployment }}"
         app.kubernetes.io/managed-by: Keptn
@@ -56,4 +56,4 @@ spec:
               fieldRef:
                 fieldPath: "metadata.namespace"
           - name: KEPTN_SERVICE
-            value: {{ include "demo-svc.fullname" . }}
+            value: "demo-svc"

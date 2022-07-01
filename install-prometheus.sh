@@ -4,7 +4,7 @@ if [[ -z "$BASHRC" ]]; then
   echo "You need to set BASHRC as an env var"
 elif [[ -z "$INGRESS_HOST" || -z "$INGRESS_IP" || -z "$INGRESS_PORT" ]]; then
   echo "You need to set INGRESS_HOST, INGRESS_IP, and INGRESS post as env vars. This is usually done during configure-istio.sh"
-
+else
   # Install Prometheus
   sudo echo PROMETHEUS_VERSION=0.8.0 >> $BASHRC
   sudo echo PROMETHEUS_EVALUATION_STAGE=hardening >> $BASHRC

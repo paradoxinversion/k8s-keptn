@@ -65,22 +65,27 @@ Usage
 .\remove -vm.ps1 -VM_NAME "k8s"
 ```
 
-# Make the scripts executable
+This script stops and deletes a virtual machine, then purges all deleted instances from multipass.
 
-> You should be in in the home directory of your ubuntu installation.
+# Prepare the VM
 
-Assuming you have opened a new shell in a fresh ubuntu install, and have downloaded this repository via
+> After running create-vm.ps1, run `multipass shell <vm-name>`
 
+> You should be in the home folder of your VM
+
+1. Clone the repo to your vm
 ```
-git clone repo
+git clone https://github.com/paradoxinversion/k8s-keptn.git
 ```
-
-run the following command to make scripts executable in your k8s virtual machine
-
+2. Make scripts executable in your virtual machine
 ```
 chmod a+x ./k8s-keptn
 ```
-
+3. Change your directory to the repository
+```
+cd ./k8s-keptn
+```
+4. Proceed with `cluster-setup.sh`
 
 ## setup-cluster.sh
 

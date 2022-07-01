@@ -19,11 +19,27 @@ We'll be running commands in [Powershell](https://docs.microsoft.com/en-us/power
 
 # Run the Scripts
 
-The following steps were taken and code was created on a Windows 10 PC with the latest version of Multipass as of 6/28/2022.
+> The following steps were taken and code was created on a Windows 10 PC with the latest version of Multipass as of 6/28/2022.
+
+> You will need administrator access in your Windows environment
+
+Running these scripts will take place in a Powershell with Administrator privileges. On Windows 10, Powershell can be opened by typing "Windows Powershell" (or "Powershell") into the search bar, then right clicking the entry, and left clicking __Run As Administrator__ in the context menu.
 
 ## create-vm.ps1
 
-This script handles creation of a multipass VM with baseline resources required for a Keptn installation. VM is launched with: the name k8s, 4 CPUs, 16G of memory, 20G of disk space on a bridged ethernet connection. 
+Parameters
+
+```
+VM_NAME [DEBUG]
+```
+
+Usage
+
+```
+.\create-vm.ps1 -VM_NAME "k8s" [-DEBUG True]
+```
+
+This script handles creation of a multipass VM with baseline resources required for a Keptn installation. VM is launched with: the name $VM_NAME, 4 CPUs, 16G of memory, 20G of disk space on a bridged ethernet connection. 
 
 We can confirm the VM has been properly created by running `multipass list`. Outptut should include our vm name and IPv4 address for the cluster. This is important, as we'll be binding/ingressing on this port.
 
@@ -35,177 +51,144 @@ k8s                     Running           172.24.152.27    Ubuntu 20.04 LTS
 
 We can enter our new VM by running `multipass shell k8s` in Powershell.
 
-## k8s-keptn-cluster-setup.sh
+## remove-vm.ps1
 
-This script handles _all_ k8s cluster setup for Keptn. The following walks through each step of the install script.
+Parameters
 
-#### __Setup Env Vars__
-
-Our script first sets up some basic environment variables used throughout the process.
-
-```sh
-K8S_VERSION=1.21.1
-KEPTN_VERSION=0.15.1
-ISTIO_VERSION=1.14.1
-LINUX_ARCHITECTURE=x86_64
+```
+VM_NAME
 ```
 
-#### __Download and Install Kubectl__
+Usage
 
-To access Kubernetes, we'll need kubectl. Here, we specify version 1.21.1, which is within constrains for Keptn's k8s requirements. Using k8s versions that are too high or too low may cause problems.
-
-```sh
-curl -LO https://dl.k8s.io/release/v$K8S_VERSION/bin/linux/amd64/kubectl
-sudo install -o root -g root -m 0755 kubectl /usr/local/bin/kubectl
+```
+.\remove -vm.ps1 -VM_NAME "k8s"
 ```
 
-#### __Download and Install k3s cluster__
+# Make the scripts executable
 
-Download the specified k3s release and start the cluster. Then, export KUBECONFIG so we can use `kubectl`. 
+> You should be in in the home directory of your ubuntu installation.
 
-```sh
-curl -sfL https://get.k3s.io | INSTALL_K3S_VERSION=v$K8S_VERSION+k3s1 K3S_KUBECONFIG_MODE="644" sh -s - --no-deploy=traefik
-export KUBECONFIG=/etc/rancher/k3s/k3s.yaml
+Assuming you have opened a new shell in a fresh ubuntu install, and have downloaded this repository via
+
+```
+git clone repo
 ```
 
-> __We need to use `export KUBECONFIG=/etc/rancher/k3s/k3s.yaml` to access the k8s cluster after the script is finished running.__
+run the following command to make scripts executable in your k8s virtual machine
 
-#### __Download and install Helm CLI__
-
-Download the Helm installer via curl and install.
-
-```sh
-curl -fsSL -o get_helm.sh https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3
-chmod 700 get_helm.sh
-./get_helm.sh
+```
+chmod a+x ./k8s-keptn
 ```
 
-#### __Download and install Istio CLI__
 
-Similarly, download the Istio installer. Run it directly (instead of finagling PATH setup, etc).
+## setup-cluster.sh
 
-```sh
-curl -L https://istio.io/downloadIstio | ISTIO_VERSION=$ISTIO_VERSION TARGET_ARCH=$LINUX_ARCHITECTURE sh -
-./istio-$ISTIO_VERSION/bin/istioctl install -y
-sleep 10s
+Usage
+
+```
+. ./setup-cluster.sh
 ```
 
-> Without Istio, we'll be unable to make multi-stage  deployments.
+This script handles download and install of kubectl and k3s cluster. It should be run first. This script and others will add environment variables to your linux environment.
 
-#### __Download and install Keptn CLI, Install Keptn into the cluster__
+## setup-helm.sh
 
-Download and install the Keptn CLI. Then, install Keptn into the cluster.
+Usage
 
-```sh
-curl -sL https://get.keptn.sh | KEPTN_VERSION=$KEPTN_VERSION bash
-keptn install --use-case=continuous-delivery
+```
+. ./setup-helm.sh
 ```
 
-#### __Setup Istio Ingress__
+This script downloads and installs helm 3. Helm will be required to package helm charts for our microservices.
 
-Here, we extract important Istio variables, INGRESS_HOST, INGRESS_PORT, SECURE_INGRESS_PORT, and TCP_INGRESS_PORT. The first two are the most important values for setting up the ingress. After setting up the environment variables, we check the INGRESS_HOST for a valid IP with which to set up the Ingress object. Next, we directly apply an ingress, using the INGRESS_HOST to create a host $INGRESS_HOST.nip.io. This is the web address we'll use to access keptn, for example `http://172.24.152.27.nip.io/api`
+## setup-istio-cli.sh
 
-We then apply an istio Gateway, public-gateway.istio-service as a gateway to applications deployed with Kepth, allowing us to access them via urls like `http://demo-dev.demo-svc.172.24.152.27.nip.io`, if we have a Keptn project called demo and a deployed service called `demo-svc` in the `dev` stage. 
-```sh
-export INGRESS_HOST=$(kubectl -n istio-system get service istio-ingressgateway -o jsonpath='{.status.loadBalancer.ingress[0].ip}')
-export INGRESS_PORT=$(kubectl -n istio-system get service istio-ingressgateway -o jsonpath='{.spec.ports[?(@.name=="http2")].port}')
-export SECURE_INGRESS_PORT=$(kubectl -n istio-system get service istio-ingressgateway -o jsonpath='{.spec.ports[?(@.name=="https")].port}')
-export TCP_INGRESS_PORT=$(kubectl -n istio-system get service istio-ingressgateway -o jsonpath='{.spec.ports[?(@.name=="tcp")].port}')
+Usage
 
-if [ -z "$INGRESS_HOST" ] || [ "$INGRESS_HOST" = "Pending" ] ; then
- 	echo "Could not determine the external IP address of istio-ingressgateway in namespace istio-system. Please make sure it is ready and has an external IP address:"
- 	echo " - kubectl -n istio-system get svc istio-ingressgateway"
- 	echo ""
- 	echo "Please consult the istio docs for more information: https://istio.io/latest/docs/tasks/traffic-management/ingress/ingress-control/#determining-the-ingress-ip-and-ports"
-	exit 1
-fi
-
-echo "External IP for istio-gateway is $INGRESS_HOST, Creating keptn configmaps"
-cat <<EOF | kubectl apply -f -
-apiVersion: networking.k8s.io/v1
-kind: Ingress
-metadata:
-  annotations:
-    kubernetes.io/ingress.class: istio
-  name: api-keptn-ingress
-  namespace: keptn
-spec:
-  rules:
-  - host: $INGRESS_HOST.nip.io
-    http:
-      paths:
-      - path: /
-        pathType: Prefix
-        backend:
-          service:
-            name: api-gateway-nginx
-            port:
-              number: 80
-EOF
-
-echo "Applying public gateway"
-kubectl apply -f - <<EOF
----
-apiVersion: networking.istio.io/v1alpha3
-kind: Gateway
-metadata:
-  name: public-gateway
-  namespace: istio-system
-spec:
-  selector:
-    istio: ingressgateway
-  servers:
-  - port:
-      name: http
-      number: 80
-      protocol: HTTP
-    hosts:
-    - '*'
-EOF
-
-sleep 10s
-
-kubectl create configmap -n keptn ingress-config --from-literal=ingress_hostname_suffix=$(kubectl -n keptn get ingress api-keptn-ingress -ojsonpath='{.spec.rules[0].host}') --from-literal=ingress_port=80 --from-literal=ingress_protocol=http --from-literal=istio_gateway=public-gateway.istio-system -oyaml --dry-run=client | kubectl apply -f -
-
-kubectl delete pod -n keptn -lapp.kubernetes.io/name=helm-service
+```
+. ./setup-istio-cli.sh
 ```
 
-#### __Authenticate Keptn CLI and remove Keptn Bridge Authentication__
+This script downloads istio and exports istioctl. It then installs istio into the cluster.
 
-First we authenticate the Keptn CLI to allow us to use the command line to execute keptn commands within this script. __Note that we'll need to authenticate after we have connected to the cluster if we want to interact with Keptn after the script has run. Once the script stops running, the shell is no longer aware of kubectl or Keptn's authentication.__ 
+## setup-keptn
 
-Next, we disable the login for Keptn's bridge, for ease of use. While we want a secure bridge in production environments, for this demo, we will bypass bridge login completely by deleting the `secret bridge-credentials` and restarting the bridge. 
+Usage
 
-```sh
-KEPTN_API_TOKEN=$(kubectl get secret keptn-api-token -n keptn -ojsonpath={.data.keptn-api-token} | base64 --decode)
-KEPTN_ENDPOINT=http://$INGRESS_HOST.nip.io/api
-keptn auth --endpoint=$KEPTN_ENDPOINT --api-token=$KEPTN_API_TOKEN
-kubectl -n keptn delete secret bridge-credentials --ignore-not-found=true
-kubectl -n keptn delete pods --selector=app.kubernetes.io/name=bridge --wait
+```
+. ./setup-keptn.sh
 ```
 
-#### __Get Helm chart for Service Deployment__
+This script installs the keptn control and execution plane into the cluster.
 
-Keptn utilizes helm charts to deploy applications. This step downloads a chart for a containerized node app and packages it to be consumed by Keptn as a service resource.
+## configure-istio
 
-```sh
-git clone https://github.com/paradoxinversion/containerized-node-app-helm-chart.git
-helm package containerized-node-app-helm-chart
+Usage
+
+```
+. ./configure-istio.sh
 ```
 
-#### __Set up a Project & Service in Keptn, and Trigger Deployment of the Service__
+This script configures ingress for keptn and a public gateway for deployed applications via istio.
 
-Here we create a project named demo with a service called demo-svc, which utilizes the containerized application docker.io/paradoxinversion/containerized-node-app. We then use the packaged helm chart we created in the previous step to add a resource to the service. Finally, we trigger a delivery of the application.
+## authenticate-keptn.sh
 
-```sh
-PROJECTNAME=demo
-SERVICENAME=demo-svc
-HELM_CHART=./demo-svc-0.1.0
-keptn create project $PROJECTNAME --shipyard="./configs/shipyard.yaml"
-keptn create service $SERVICENAME --project=$PROJECTNAME
-keptn add-resource --project=$PROJECTNAME --service=$SERVICENAME --all-stages --resource=$HELM_CHART.tgz --resourceUri=helm/$SERVICENAME.tgz
-keptn trigger delivery --project $PROJECTNAME --service $SERVICENAME --image docker.io/paradoxinversion/containerized-node-app
+Usage
+
 ```
+. ./authenticate-keptn.sh
+```
+
+This script authenticates the keptn cli and removes credentialing from the keptn bridge for demo purposes.
+
+## create-project.sh
+
+Parameters
+
+```
+PROJECTNAME [SHIPYARD]
+```
+
+Usage
+
+```
+. ./create-project.sh demo [./custom/path/to/shipyard.yaml]
+```
+
+This script creates a keptn project.
+
+## create-service.sh
+
+Parameters
+
+```
+PROJECTNAME SERVICENAME HELM_CHART_VERSION
+```
+
+Usage
+
+```
+. ./create-service demo demo-svc 0.1.0
+```
+
+This script checks for a helm chart definition at `./charts/$SERVICENAME` and fails early if it does not exists. It then checks for a helm chart at `./$SERVICENAME-$HELM_CHART_VERSION.tgz` and removes it if it exists. The chart is then packaged at that location, a keptn service is created, and the helm chart is applied via `keptn add-resource`.
+
+## setup-jmeter.sh
+
+Parameters
+
+```
+KEPTN_PROJECT KEPTN_SERVICE KEPTN_STAGE
+```
+
+Usage
+
+```
+. ./setup-jmeter.sh demo demo-svc hardening
+```
+
+This script adds jmeter resources `jmeter.conf.yaml`, `basiccheck.jmx`, and `load.jmx` via `keptn add-resource` to the supplied project, service, and stage.
 
 # Support
 

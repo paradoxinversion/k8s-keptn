@@ -9,7 +9,7 @@ if [ -z "$SERVICENAME" ]; then
 	exit 1
 fi
 # Install Prometheus
-sudo echo PROMETHEUS_VERSION=0.8.1 >> $BASHRC
+sudo echo PROMETHEUS_VERSION=0.8.0 >> $BASHRC
 sudo echo PROMETHEUS_EVALUATION_STAGE=hardening >> $BASHRC
 source $BASHRC
 
@@ -19,6 +19,28 @@ helm install prometheus prometheus-community/prometheus --namespace monitoring -
 
 helm upgrade --install -n keptn prometheus-service https://github.com/keptn-contrib/prometheus-service/releases/download/$PROMETHEUS_VERSION/prometheus-service-$PROMETHEUS_VERSION.tgz --reuse-values
 kubectl -n monitoring apply -f https://raw.githubusercontent.com/keptn-contrib/prometheus-service/$PROMETHEUS_VERSION/deploy/role.yaml
+
+cat <<EOF | kubectl apply -f -
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  annotations:
+    kubernetes.io/ingress.class: istio
+  name: prometheus-ingress
+  namespace: monitoring
+spec:
+  rules:
+  - host: prometheus.$INGRESS_HOST.nip.io
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: prometheus-server
+            port:
+              number: 80
+EOF
 keptn configure monitoring prometheus --project $PROJECTNAME --service $SERVICENAME
 # Add SLI Definitions
 keptn add-resource --project $PROJECTNAME --stage=$PROMETHEUS_EVALUATION_STAGE --service $SERVICENAME --resource ./configs/sli-config-prometheus.yaml --resourceUri=prometheus/sli.yaml

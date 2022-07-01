@@ -24,4 +24,3 @@ helm package ./charts/$SERVICENAME
 keptn create service $SERVICENAME --project $PROJECTNAME
 keptn add-resource --project $PROJECTNAME --service $SERVICENAME --all-stages --resource $HELM_CHART --resourceUri helm/$SERVICENAME.tgz
 
-exit 0

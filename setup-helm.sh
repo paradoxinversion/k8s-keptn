@@ -10,4 +10,3 @@ echo "Running ./get_helm"
 
 echo "The next script to run is setup-istio-cli.sh"
 
-exit 0

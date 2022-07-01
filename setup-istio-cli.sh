@@ -22,4 +22,3 @@ sleep 10s
 
 echo "The next script to run is setup-keptn.sh"
 
-exit 0

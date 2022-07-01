@@ -17,4 +17,3 @@ PROJECTNAME=$1
 
 keptn create project $PROJECTNAME --shipyard $SHIPYARD
 
-exit 0

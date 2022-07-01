@@ -20,4 +20,3 @@ helm install helm-service https://github.com/keptn/keptn/releases/download/$KEPT
 
 echo "The next script to run is configure-istio.sh"
 
-exit 0

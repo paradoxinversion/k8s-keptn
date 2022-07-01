@@ -20,4 +20,3 @@ kubectl -n keptn delete pods --selector=app.kubernetes.io/name=bridge --wait
 
 echo "The next recommended script to run is setup-project.sh"
 
-exit 0

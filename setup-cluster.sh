@@ -18,4 +18,3 @@ source $BASHRC
 
 echo "The next script to run is setup-helm.sh"
 
-exit 0

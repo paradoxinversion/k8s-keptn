@@ -76,4 +76,3 @@ kubectl delete pod -n keptn -lapp.kubernetes.io/name=helm-service
 
 echo "The next script to run is authenticate-keptn.sh"
 
-exit 0

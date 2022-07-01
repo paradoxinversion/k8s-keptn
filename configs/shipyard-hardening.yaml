@@ -5,16 +5,3 @@ metadata:
 spec:
   stages:
     - name: "hardening"
-      sequences:
-      - name: "delivery"
-        tasks:
-          - name: "deployment"
-            properties:
-              deploymentstrategy: "direct"
-          - name: "release"
-      - name: "delivery-direct"
-        tasks:
-          - name: "deployment"
-            properties:
-              deploymentstrategy: "direct"
-          - name: "release"

@@ -18,6 +18,8 @@ else
   apiVersion: networking.k8s.io/v1
   kind: Ingress
   metadata:
+    annotations:
+      kubernetes.io/ingress.class: istio
     name: prometheus-ingress
     namespace: monitoring
   spec:

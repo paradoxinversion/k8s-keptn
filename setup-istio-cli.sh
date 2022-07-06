@@ -5,7 +5,7 @@ if [[ -z "$BASHRC" ]]; then
   exit 1
 fi
 
-sudo echo export ISTIO_VERSION=1.13.5 >> $BASHRC
+sudo echo export ISTIO_VERSION=1.14.1 >> $BASHRC
 sudo echo export LINUX_ARCHITECTURE=x86_64 >> $BASHRC
 source $BASHRC
 

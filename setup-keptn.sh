@@ -5,7 +5,7 @@ if [[ -z "$BASHRC" ]]; then
   exit 1
 fi
 
-sudo echo export KEPTN_VERSION=0.14.2 >> $BASHRC
+sudo echo export KEPTN_VERSION=0.16.1 >> $BASHRC
 source $BASHRC
 
 # Install Keptn CLI

@@ -9,10 +9,6 @@ spec:
       app: demo-svc
   template:
     metadata:
-      {{- with .Values.podAnnotations }}
-      annotations:
-        {{- toYaml . | nindent 8 }}
-      {{- end }}
       labels:
         app: "demo-svc"
         app.kubernetes.io/name: {{ .Values.keptn.service }}
@@ -52,7 +48,7 @@ spec:
           - name: CONTAINER_IMAGE
             value: "{{ .Values.image }}"
           - name: KEPTN_PROJECT
-            value: "{{ .Chart.Name }}"
+            value: demo
           - name: KEPTN_STAGE
             valueFrom:
               fieldRef:

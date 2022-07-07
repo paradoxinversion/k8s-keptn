@@ -6,7 +6,7 @@ elif [[ -z "$INGRESS_HOST" || -z "$INGRESS_PORT" ]]; then
   echo "You need to set INGRESS_HOST and INGRESS_PORT post as env vars. This is usually done during configure-istio.sh"
 else
   # Install Prometheus
-  sudo echo PROMETHEUS_VERSION=0.8.3 >> $BASHRC
+  sudo echo PROMETHEUS_VERSION=0.8.0 >> $BASHRC
   source $BASHRC
 
   kubectl create namespace monitoring

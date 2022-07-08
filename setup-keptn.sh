@@ -3,8 +3,7 @@
 BASHRC=~/.bashrc
 source $BASHRC
 
-sudo echo export KEPTN_VERSION=0.15.1 >> $BASHRC
-source $BASHRC
+KEPTN_VERSION=0.15.1
 
 # Install Keptn CLI
 echo "Downloading, running Keptn installer version ${KEPTN_VERSION}"

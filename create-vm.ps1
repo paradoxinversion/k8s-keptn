@@ -1,4 +1,4 @@
-Param(
+Param (
   [string]$VM_NAME,
   [bool]$DEBUG
 )

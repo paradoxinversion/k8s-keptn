@@ -2,6 +2,7 @@
 
 # Set initial setup variables. We copy them here to .bashrc for easier reuse. Further env vars will be gathered and added to bashrc throughout the run of the script as necessary.
 BASHRC=~/.bashrc
+sudo echo export BASHRC=$BASHRC >> $BASHRC
 sudo echo export KUBECTL_VERSION=1.22.6 >> $BASHRC
 sudo echo export K8S_VERSION=1.22.6 >> $BASHRC
 source $BASHRC

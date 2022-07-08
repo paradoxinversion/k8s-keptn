@@ -79,7 +79,7 @@ git clone https://github.com/paradoxinversion/k8s-keptn.git
 ```
 2. Make scripts executable in your virtual machine
 ```
-chmod a+x ./k8s-keptn
+sudo chmod +x -R ./k8s-keptn
 ```
 3. Change your directory to the repository
 ```

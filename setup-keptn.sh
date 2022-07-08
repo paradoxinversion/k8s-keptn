@@ -1,9 +1,7 @@
 #!/bin/bash
 
-if [[ -z "$BASHRC" ]]; then
-  echo "You have need to set BASHRC as an env var"
-  exit 1
-fi
+BASHRC=~/.bashrc
+source $BASHRC
 
 sudo echo export KEPTN_VERSION=0.15.1 >> $BASHRC
 source $BASHRC
@@ -17,6 +15,8 @@ helm install keptn https://github.com/keptn/keptn/releases/download/$KEPTN_VERSI
 helm install jmeter-service https://github.com/keptn/keptn/releases/download/$KEPTN_VERSION/jmeter-service-$KEPTN_VERSION.tgz -n keptn --create-namespace --wait
 
 helm install helm-service https://github.com/keptn/keptn/releases/download/$KEPTN_VERSION/helm-service-$KEPTN_VERSION.tgz -n keptn --create-namespace --wait
+
+echo "export KEPTN_VERSION=${KEPTN_VERSION}" >> $BASHRC
 
 echo "The next script to run is configure-istio.sh"
 

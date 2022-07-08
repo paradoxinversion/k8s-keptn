@@ -4,7 +4,7 @@
 export BASHRC=~/.bashrc
 export KUBECTL_VERSION=1.22.6
 export K8S_VERSION=1.22.6
-
+source $BASHRC
 # Install kubectl
 echo "Downloading kubectl version ${KUBECTL_VERSION}"
 curl -LO https://dl.k8s.io/release/v$KUBECTL_VERSION/bin/linux/amd64/kubectl

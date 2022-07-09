@@ -1,13 +1,10 @@
 #!/bin/bash
 
-if [[ -z "$BASHRC" ]]; then
-  echo "You need to set BASHRC as an env var"
-elif [[ -z "$INGRESS_HOST" || -z "$INGRESS_PORT" ]]; then
+if  [[ -z "$INGRESS_HOST" || -z "$INGRESS_PORT" ]]; then
   echo "You need to set INGRESS_HOST and INGRESS_PORT post as env vars. This is usually done during configure-istio.sh"
 else
   # Install Prometheus
-  sudo echo PROMETHEUS_VERSION=0.8.1 >> $BASHRC
-  source $BASHRC
+  PROMETHEUS_VERSION=0.8.1
 
   kubectl create namespace monitoring
   helm repo add prometheus-community https://prometheus-community.github.io/helm-charts

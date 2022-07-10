@@ -4,6 +4,7 @@ metadata:
   name: "demo-svc"
   namespace: {{ .Release.Namespace }}
 spec:
+  hostname: demo-svc
   replicas: {{ .Values.replicaCount }}
   selector:
     matchLabels:

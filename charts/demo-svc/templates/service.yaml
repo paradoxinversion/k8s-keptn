@@ -2,17 +2,15 @@ apiVersion: v1
 kind: Service
 metadata:
   name: demo-svc
+  labels:
+    app: "demo-svc"
+    app.kubernetes.io/name: {{ .Values.keptn.service }}
+    app.kubernetes.io/instance: "{{ .Values.keptn.service }}-{{ .Values.keptn.deployment }}"
+    app.kubernetes.io/component: api
+    app.kubernetes.io/part-of: "{{ .Values.keptn.project }}"
+    app.kubernetes.io/managed-by: Keptn
+    app.kubernetes.io/version: {{ (split ":" .Values.image)._1 | default "latest" }}
 spec:
-  template:
-    metadata:
-      labels:
-        app: "demo-svc"
-        app.kubernetes.io/name: {{ .Values.keptn.service }}
-        app.kubernetes.io/instance: "{{ .Values.keptn.service }}-{{ .Values.keptn.deployment }}"
-        app.kubernetes.io/component: api
-        app.kubernetes.io/part-of: "{{ .Values.keptn.project }}"
-        app.kubernetes.io/managed-by: Keptn
-        app.kubernetes.io/version: {{ (split ":" .Values.image)._1 | default "latest" }}
   type: {{ .Values.service.type }}
   ports:
     - port: {{ .Values.service.port }}

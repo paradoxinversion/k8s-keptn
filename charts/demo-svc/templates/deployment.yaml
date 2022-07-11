@@ -2,13 +2,12 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: "demo-svc"
-  namespace: {{ .Release.Namespace }}
 spec:
-  hostname: demo-svc
+  hostname: "demo-svc"
   replicas: {{ .Values.replicaCount }}
   selector:
     matchLabels:
-      app: demo-svc
+      app: "demo-svc"
   template:
     metadata:
       labels:
@@ -56,4 +55,4 @@ spec:
               fieldRef:
                 fieldPath: "metadata.namespace"
           - name: KEPTN_SERVICE
-            value: "demo-svc"
+            value: "{{ .Values.SERVICE_PLACEHOLDER_C.service.name }}"

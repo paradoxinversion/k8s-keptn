@@ -19,6 +19,3 @@ echo "export KEPTN_API_TOKEN=$KEPTN_API_TOKEN" >> $BASHRC
 echo "export KEPTN_ENDPOINT=$KEPTN_ENDPOINT" >> $BASHRC
 
 echo "The next recommended script to run is create-project.sh"
-if [[ "$SETUP_PROCEED" == 1 ]]; then
-  ./create-project.sh demo
-fi

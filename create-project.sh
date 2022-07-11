@@ -28,7 +28,3 @@ fi
 PROJECTNAME=$1
 
 keptn create project $PROJECTNAME --shipyard $SHIPYARD --git-user $GIT_USER --git-token $GIT_TOKEN --git-remote-url $GIT_REMOTE_URL
-
-if [[ "$SETUP_PROCEED" == 1 ]]; then
-  ./setup-service demo demo-svc 0.1.0
-fi

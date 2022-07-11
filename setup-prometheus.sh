@@ -1,6 +1,6 @@
 #!/bin/bash
 
-elif [[ -z "$1" || -z "$2" ]]; then
+if [[ -z "$1" || -z "$2" ]]; then
   echo "You have to pass PROJECTNAME and SERVICENAME as arguments"
   echo "usage: ./setup-prometheus.sh demo demo-svc"
   exit 1

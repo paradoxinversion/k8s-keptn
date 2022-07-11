@@ -8,5 +8,8 @@ chmod 700 get_helm.sh
 echo "Running ./get_helm"
 ./get_helm.sh
 
-echo "The next script to run is setup-istio-cli.sh"
+echo "The next script to run is ./setup-istio-cli.sh."
 
+if [[ "$SETUP_PROCEED" == 1 ]]; then
+  ./setup-istio-cli.sh
+fi

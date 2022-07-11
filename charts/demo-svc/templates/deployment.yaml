@@ -3,7 +3,6 @@ kind: Deployment
 metadata:
   name: "demo-svc"
 spec:
-  hostname: "demo-svc"
   replicas: {{ .Values.replicaCount }}
   selector:
     matchLabels:
@@ -55,4 +54,4 @@ spec:
               fieldRef:
                 fieldPath: "metadata.namespace"
           - name: KEPTN_SERVICE
-            value: "{{ .Values.SERVICE_PLACEHOLDER_C.service.name }}"
+            value: demo-svc

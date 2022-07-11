@@ -20,5 +20,8 @@ echo "export ISTIO_VERSION=$ISTIO_VERSION" >> $BASHRC
 echo "export LINUX_ARCHITECTURE=$LINUX_ARCHITECTURE" >> $BASHRC
 echo "export ISTIOCTL=./istio-$ISTIO_VERSION/bin/istioctl" >> $BASHRC
 
-echo "The next script to run is setup-keptn.sh"
+echo "The next script to run is ./setup-keptn.sh"
 
+if [[ "$SETUP_PROCEED" == 1 ]]; then
+  ./setup-keptn.sh
+fi

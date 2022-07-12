@@ -17,6 +17,6 @@ EOF
 keptn add-resource --project demo --service demo-svc --all-stages --resource ./demo-svc-0.1.0.tgz --resourceUri helm/demo-svc.tgz
 
 keptn add-resource --project demo --stage dev --service demo-svc --resource ./configs/sli-config-prometheus.yaml --resourceUri prometheus/sli.yaml
-keptn add-resource --project demo --service demo-svc --stage dev --resource ./configs/slo-quality-gates.yaml --resourceUri slo.yaml
+keptn add-resource --project demo --service demo-svc --stage dev --resource ./configs/slo.yaml --resourceUri slo.yaml
 
 keptn trigger delivery --project demo --service demo-svc --image paradoxinversion/containerized-node-app:latest

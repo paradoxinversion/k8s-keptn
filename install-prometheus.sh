@@ -33,9 +33,7 @@ else
 EOF
 
   helm upgrade --install -n keptn prometheus-service https://github.com/keptn-contrib/prometheus-service/releases/download/$PROMETHEUS_VERSION/prometheus-service-$PROMETHEUS_VERSION.tgz \
-  --reuse-values \ 
-  --set prometheus.createTargets=false \
-  --set prometheus.createAlerts=false
+  --reuse-values
 
   kubectl -n monitoring apply -f https://raw.githubusercontent.com/keptn-contrib/prometheus-service/$PROMETHEUS_VERSION/deploy/role.yaml
 

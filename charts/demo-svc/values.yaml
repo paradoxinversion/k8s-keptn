@@ -5,5 +5,4 @@
 replicaCount: 1
 image: paradoxinversion/containerized-node-app
 service:
-  type: ClusterIP
   port: 8080

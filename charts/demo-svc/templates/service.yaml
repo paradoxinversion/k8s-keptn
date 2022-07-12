@@ -3,12 +3,10 @@ kind: Service
 metadata:
   name: demo-svc
 spec:
-  type: {{ .Values.service.type }}
+  clusterIP: None
   ports:
     - port: {{ .Values.service.port }}
-      targetPort: http
       protocol: TCP
-      name: http
   selector:
     app: demo-svc
   

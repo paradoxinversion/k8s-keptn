@@ -27,6 +27,8 @@ curl -LO https://dl.k8s.io/release/v$KUBECTL_VERSION/bin/linux/amd64/kubectl
 
 echo "Installing kubectl version $KUBECTL_VERSION"
 sudo install -o root -g root -m 0755 kubectl /usr/local/bin/kubectl
+source <(kubectl completion bash)
+echo "source <(kubectl completion bash)" >> ~/.bashrc
 
 # Install k3s cluster
 curl -sfL https://get.k3s.io | INSTALL_K3S_VERSION=v$K8S_VERSION+k3s1 K3S_KUBECONFIG_MODE="644" sh -s - --no-deploy=traefik

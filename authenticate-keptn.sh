@@ -1,8 +1,5 @@
 #!/bin/bash
 
-BASHRC=~/.bashrc
-source $BASHRC
-
 if [[ -z "$INGRESS_HOST" ]]; then
   echo "You have need to set INGRESS_HOST as an env var"
   exit 1
@@ -18,4 +15,9 @@ kubectl -n keptn delete pods --selector=app.kubernetes.io/name=bridge --wait
 echo "export KEPTN_API_TOKEN=$KEPTN_API_TOKEN" >> $BASHRC
 echo "export KEPTN_ENDPOINT=$KEPTN_ENDPOINT" >> $BASHRC
 
-echo "The next recommended script to run is create-project.sh"
+
+echo "The next recommended script to run is ./install-prometheus.sh"
+
+if [[ "$SETUP_PROCEED" == 1 ]]; then
+  ./install-prometheus.sh
+fi

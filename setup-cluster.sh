@@ -23,17 +23,16 @@ export K8S_VERSION=1.22.6
 
 # Install kubectl
 echo "Downloading kubectl version $KUBECTL_VERSION"
-curl -LO https://dl.k8s.io/release/v$KUBECTL_VERSION/bin/linux/amd64/kubectl
+curl -Lo ~/kubectl https://dl.k8s.io/release/v$KUBECTL_VERSION/bin/linux/amd64/kubectl
 
 echo "Installing kubectl version $KUBECTL_VERSION"
-sudo install -o root -g root -m 0755 kubectl /usr/local/bin/kubectl
-source <(kubectl completion bash)
+sudo install -o root -g root -m 0755 ~/kubectl /usr/local/bin/kubectl
 echo "source <(kubectl completion bash)" >> ~/.bashrc
 
 # Install k3s cluster
+echo "Installing k3s kubernetes cluster, version $K8S_VERSION"
 curl -sfL https://get.k3s.io | INSTALL_K3S_VERSION=v$K8S_VERSION+k3s1 K3S_KUBECONFIG_MODE="644" sh -s - --no-deploy=traefik
 export KUBECONFIG=/etc/rancher/k3s/k3s.yaml
-
 echo "The k3s kubernetes cluster has been created and is accessible by running: export KUBECONFIG=/etc/rancher/k3s/k3s.yaml"
 echo "export KUBECTL_VERSION=$KUBECTL_VERSION" >> $BASHRC
 echo "export K8S_VERSION=$K8S_VERSION" >> $BASHRC

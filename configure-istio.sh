@@ -1,8 +1,5 @@
 #!/bin/bash
 
-BASHRC=~/.bashrc
-source $BASHRC
-
 echo "Getting Istio Ingress info"
 export INGRESS_HOST=$(kubectl -n istio-system get service istio-ingressgateway -o jsonpath='{.status.loadBalancer.ingress[0].ip}')
 export INGRESS_PORT=$(kubectl -n istio-system get service istio-ingressgateway -o jsonpath='{.spec.ports[?(@.name=="http2")].port}')
@@ -41,7 +38,7 @@ spec:
               number: 80
 EOF
 
-echo "Applying public gateway"
+echo "Applying public gateway exposing deployed applications"
 kubectl apply -f - <<EOF
 ---
 apiVersion: networking.istio.io/v1alpha3

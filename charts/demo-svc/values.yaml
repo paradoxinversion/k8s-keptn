@@ -2,7 +2,12 @@
 # This is a YAML-formatted file.
 # Declare variables to be passed into your templates.
 
+# replicaCount and image are required by Keptn
 replicaCount: 1
 image: paradoxinversion/containerized-node-app
+
+
 service:
-  port: 8080
+  # Prometheus will be scraping for our keptn services on port 80
+  port: 80
+  targetPort: 8080

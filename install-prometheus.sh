@@ -8,7 +8,7 @@ else
 
   kubectl create namespace monitoring
   helm repo add prometheus-community https://prometheus-community.github.io/helm-charts
-  helm install prometheus prometheus-community/prometheus --namespace monitoring --wait -f ./configs/prometheus-community-install.yaml
+  helm install prometheus prometheus-community/prometheus --namespace monitoring --wait
 
   cat <<EOF | kubectl apply -f -
   apiVersion: networking.k8s.io/v1

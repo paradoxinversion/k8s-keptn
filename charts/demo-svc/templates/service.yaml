@@ -2,10 +2,12 @@ apiVersion: v1
 kind: Service
 metadata:
   name: demo-svc
+  namespace: {{ .Release.Namespace }} 
 spec:
-  clusterIP: None
+  type: ClusterIP
   ports:
-    - port: {{ .Values.service.port }}
+    - port: 80
+      targetPort: 8080
       protocol: TCP
   selector:
     app: demo-svc

@@ -85,7 +85,7 @@ sudo chmod +x -R ./k8s-keptn
 ```
 cd ./k8s-keptn
 ```
-4. Proceed with `cluster-setup.sh`
+4. Proceed with `setup-cluster.sh`
 
 ## setup-cluster.sh
 

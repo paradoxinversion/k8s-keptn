@@ -19,8 +19,12 @@ fi
 if [[ ! -f "$HELM_CHART" ]]; then
   rm $HELM_CHART
 fi
+
 helm package ./charts/$SERVICENAME
 
 keptn create service $SERVICENAME --project $PROJECTNAME
 keptn add-resource --project $PROJECTNAME --service $SERVICENAME --all-stages --resource $HELM_CHART --resourceUri helm/$SERVICENAME.tgz
 
+if [[ "$SETUP_PROCEED" == 1 ]]; then
+  ./trigger-delivery.sh demo demo-svc paradoxinversion/containerized-node-app
+fi

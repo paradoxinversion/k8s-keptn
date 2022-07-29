@@ -40,4 +40,6 @@ kubectl -n monitoring apply -f https://raw.githubusercontent.com/keptn-contrib/p
 
 echo "Prometheus is available at http://prometheus.$INGRESS_HOST.nip.io:$INGRESS_PORT"
 
-
+if [[ "$SETUP_PROCEED" == 1 ]]; then
+  ./install-jes.sh
+fi

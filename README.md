@@ -73,19 +73,12 @@ This script stops and deletes a virtual machine, then purges all deleted instanc
 
 > You should be in the home folder of your VM
 
-1. Clone the repo to your vm
 ```
 git clone https://github.com/paradoxinversion/k8s-keptn.git
-```
-2. Make scripts executable in your virtual machine
-```
 sudo chmod +x -R ./k8s-keptn
-```
-3. Change your directory to the repository
-```
 cd ./k8s-keptn
 ```
-4. Proceed with `setup-cluster.sh`
+Proceed with `setup-cluster.sh`
 
 ## setup-cluster.sh
 

@@ -12,9 +12,6 @@ spec:
             properties:
               deploymentstrategy: "direct"
           - name: "release"
-      - name: "delivery-direct"
+      - name: "foo"
         tasks:
-          - name: "deployment"
-            properties:
-              deploymentstrategy: "direct"
-          - name: "release"
+          - name: "bar"

@@ -5,7 +5,7 @@ sudo curl -sSL -o /usr/local/bin/argocd https://github.com/argoproj/argo-cd/rele
 chmod +x /usr/local/bin/argocd
 
 
-helm upgrade --install argo-cd argo/argo-cd -n argocd --create-namespace --set "server.extraArgs={--insecure}" --set "server.ingress.enabled=true"
+helm upgrade --install saboteur argo/argo-cd -n argocd --create-namespace --set "server.extraArgs={--insecure}" --set "server.ingress.enabled=true" --set "server.ingressClassName=istio" 
 cat <<EOF | kubectl apply -f -
 apiVersion: networking.k8s.io/v1
 kind: Ingress
@@ -26,35 +26,28 @@ spec:
             name: argocd-server
             port:
               number: 80
-  tls:
-  - hosts:
-    - argocd.$INGRESS_HOST.nip.io
-    secretName: argo-secret
+
 EOF
 cat <<EOF | kubectl apply -f -
-apiVersion: networking.k8s.io/v1
-kind: Ingress
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
 metadata:
-  name: argocd-grpc-ingress
-  namespace: argocd
-  annotations:
-    kubernetes.io/ingress.class: istio
+  name: argocd
 spec:
-  rules:
-  - host: argocd.$INGRESS_HOST.nip.io
-    http:
-      paths:
-      - path: /
-        pathType: Prefix
-        backend:
-          service:
-            name: argocd-server
-            port:
-              number: 80
-  tls:
-  - hosts:
-    - argocd.$INGRESS_HOST.nip.io
-    secretName: argo-secret
+  hosts:
+  - "*"
+  gateways:
+  - public-gateway
+  http:
+  - match:
+    - uri:
+        prefix: /
+    route:
+    - destination:
+        port:
+          number: 8080
+        host: argocd-server
 EOF
+
 
 kubectl -n default get secret argocd-initial-admin-secret -o jsonpath="{.data.password}" | base64 -d

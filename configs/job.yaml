@@ -1,0 +1,12 @@
+apiVersion: v2
+actions:
+  - name: "Respond to a bar event"
+    events:
+      - name: "sh.keptn.event.bar.triggered"
+    tasks:
+      - name: "Respond to Bar"
+        image: "alpine"
+        cmd:
+          - echo
+        args:
+          - "Log from the bar event"

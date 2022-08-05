@@ -20,52 +20,36 @@ server:
       kubernetes.io/ingress.class: istio
 EOF
 
-# Create an ingress for the argocd server HTTP
+# Create an ingress for the argocd server HTTP/HTTPS
+# This will work for browser access, but not CLI access
 cat <<EOF | kubectl apply -f -
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   annotations:
     kubernetes.io/ingress.class: istio
-  name: argocd-server-ingress
+  name: argocd-server
   namespace: argocd
 spec:
   rules:
-  - host: argocd.$INGRESS_HOST.nip.io
-    http:
-      paths:
-      - path: /
-        pathType: Prefix
-        backend:
-          service:
-            name: argocd-server
-            port:
-              number: 80
+    - host: argocd.$INGRESS_HOST.nip.io
+      http:
+        paths:
+        - path: /
+          pathType: Prefix
+          backend:
+            service:
+              name: argocd-server
+              port:
+                number: 80
+    tls:
+    - hosts:
+      - argocd.$INGRESS_HOST.nip.io
+      secretName: argo-cert
 EOF
 
 
-
-cat <<EOF | kubectl apply -f -
-apiVersion: networking.k8s.io/v1
-kind: Ingress
-metadata:
-  annotations:
-    kubernetes.io/ingress.class: istio
-  name: argocd-server-ingress-grpc
-  namespace: argocd
-spec:
-  rules:
-  - host: argocd.$INGRESS_HOST.nip.io
-    gRPC:
-      paths:
-      - path: /
-        pathType: Prefix
-        backend:
-          service:
-            name: argocd-server
-            port:
-              number: 80
-EOF
+# Create a secure gateway
 kubectl apply -f - <<EOF
 apiVersion: networking.istio.io/v1alpha3
 kind: Gateway
@@ -93,29 +77,6 @@ apiVersion: networking.istio.io/v1alpha3
 kind: VirtualService
 metadata:
   name: argocd-server-vs
-  namespace: argocd
-spec:
-  hosts:
-  - argocd-server
-  gateways:
-  - argocd-gateway
-  tls:
-  - match:
-    - port: 443
-      sniHosts:
-      - argocd-server
-    route:
-    - destination:
-        host: argocd-server
-        port:
-          number: 443
-EOF
-
-kubectl apply -f - <<EOF
-apiVersion: networking.istio.io/v1alpha3
-kind: VirtualService
-metadata:
-  name: argocd-server-vs-grpc
   namespace: argocd
 spec:
   hosts:

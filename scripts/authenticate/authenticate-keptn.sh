@@ -19,5 +19,5 @@ echo "export KEPTN_ENDPOINT=$KEPTN_ENDPOINT" >> $BASHRC
 echo "The next recommended script to run is ./install-prometheus.sh"
 
 if [[ "$SETUP_PROCEED" == 1 ]]; then
-  ../install/install-prometheus.sh
+  $WORKING_DIRECTORY/scripts/install/install-prometheus.sh
 fi

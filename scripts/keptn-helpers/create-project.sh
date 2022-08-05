@@ -12,5 +12,5 @@ SHIPYARD=$2
 keptn create project $PROJECTNAME --shipyard $SHIPYARD
 
 if [[ "$SETUP_PROCEED" == 1 ]]; then
-  ./create-service.sh demo demo-svc 0.1.0 
+  $WORKING_DIRECTORY/scripts/keptn-helpers/create-service.sh demo demo-svc 0.1.0 
 fi

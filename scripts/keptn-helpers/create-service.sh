@@ -9,9 +9,9 @@ fi
 PROJECTNAME=$1
 SERVICENAME=$2
 HELM_CHART_VERSION=$3
-HELM_CHART=../../$SERVICENAME-$HELM_CHART_VERSION.tgz
+HELM_CHART=$WORKING_DIRECTORY/$SERVICENAME-$HELM_CHART_VERSION.tgz
 
-if [[ ! -d "../../charts/$SERVICENAME" ]]; then
+if [[ ! -d "$WORKING_DIRECTORY/charts/$SERVICENAME" ]]; then
   echo "Chart directory $SERVICENAME does not exist."
   exit 1
 fi
@@ -20,11 +20,11 @@ if [[ ! -f "$HELM_CHART" ]]; then
   rm $HELM_CHART
 fi
 
-helm package ../../charts/$SERVICENAME
+helm package $WORKING_DIRECTORY/charts/$SERVICENAME
 
 keptn create service $SERVICENAME --project $PROJECTNAME
 keptn add-resource --project $PROJECTNAME --service $SERVICENAME --all-stages --resource $HELM_CHART --resourceUri helm/$SERVICENAME.tgz
 
 if [[ "$SETUP_PROCEED" == 1 ]]; then
-  ./trigger-delivery.sh demo demo-svc paradoxinversion/containerized-node-app
+  $WORKING_DIRECTORY/scripts/keptn-helpers/trigger-delivery.sh demo demo-svc paradoxinversion/containerized-node-app
 fi

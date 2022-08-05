@@ -21,5 +21,5 @@ echo "export ISTIOCTL=${ISTIOCTL}" >> $BASHRC
 echo "The next script to run is ./setup-keptn.sh"
 
 if [[ "$SETUP_PROCEED" == 1 ]]; then
-  ./install-keptn.sh
+  $WORKING_DIRECTORY/scripts/install/install-keptn.sh
 fi

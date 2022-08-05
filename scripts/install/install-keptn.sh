@@ -15,5 +15,5 @@ echo "export KEPTN_VERSION=${KEPTN_VERSION}" >> $BASHRC
 echo "The next script to run is ./configure-istio.sh"
 
 if [[ "$SETUP_PROCEED" == 1 ]]; then
-  ../configure/configure-istio.sh
+  $WORKING_DIRECTORY/scripts/configure/configure-istio.sh
 fi

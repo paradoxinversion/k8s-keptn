@@ -12,5 +12,5 @@ helm upgrade --install --create-namespace -n ${JES_NAMESPACE} \
   --set remoteControlPlane.api.protocol=""
 
 if [[ "$SETUP_PROCEED" == 1 ]]; then
-  ./create-project.sh demo ./configs/shipyard-singlestage.yaml
+  ../keptn-helpers/create-project.sh demo ../../configs/shipyard-singlestage.yaml
 fi

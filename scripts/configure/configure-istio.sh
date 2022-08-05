@@ -76,5 +76,5 @@ echo "export TCP_INGRESS_PORT=$(kubectl -n istio-system get service istio-ingres
 echo "The next script to run is authenticate-keptn.sh"
 
 if [[ "$SETUP_PROCEED" == 1 ]]; then
-  ./authenticate-keptn.sh
+  ../authenticate/authenticate-keptn.sh
 fi

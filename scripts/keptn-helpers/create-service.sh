@@ -9,9 +9,9 @@ fi
 PROJECTNAME=$1
 SERVICENAME=$2
 HELM_CHART_VERSION=$3
-HELM_CHART=./$SERVICENAME-$HELM_CHART_VERSION.tgz
+HELM_CHART=../../$SERVICENAME-$HELM_CHART_VERSION.tgz
 
-if [[ ! -d "./charts/$SERVICENAME" ]]; then
+if [[ ! -d "../../charts/$SERVICENAME" ]]; then
   echo "Chart directory $SERVICENAME does not exist."
   exit 1
 fi
@@ -20,7 +20,7 @@ if [[ ! -f "$HELM_CHART" ]]; then
   rm $HELM_CHART
 fi
 
-helm package ./charts/$SERVICENAME
+helm package ../../charts/$SERVICENAME
 
 keptn create service $SERVICENAME --project $PROJECTNAME
 keptn add-resource --project $PROJECTNAME --service $SERVICENAME --all-stages --resource $HELM_CHART --resourceUri helm/$SERVICENAME.tgz

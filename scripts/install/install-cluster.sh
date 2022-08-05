@@ -41,5 +41,5 @@ echo "export KUBECONFIG=$KUBECONFIG" >> $BASHRC
 echo "The next script to run is ./setup-helm.sh"
 
 if [[ "$SETUP_PROCEED" == 1 ]]; then
-  ./setup-helm.sh
+  ./install-helm.sh
 fi

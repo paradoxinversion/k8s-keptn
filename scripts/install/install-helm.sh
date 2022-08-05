@@ -11,5 +11,5 @@ echo "Running ./get_helm"
 echo "The next script to run is ./setup-istio-cli.sh."
 
 if [[ "$SETUP_PROCEED" == 1 ]]; then
-  ./setup-istio-cli.sh
+  ./install-istio-cli.sh
 fi

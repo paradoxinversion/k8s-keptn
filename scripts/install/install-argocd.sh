@@ -31,6 +31,10 @@ metadata:
   name: argocd-server
   namespace: argocd
 spec:
+  tls:
+  - hosts:
+    - argocd.$INGRESS_HOST.nip.io
+    secretName: argo-cert
   rules:
     - host: argocd.$INGRESS_HOST.nip.io
       http:
@@ -42,55 +46,9 @@ spec:
               name: argocd-server
               port:
                 number: 80
-    tls:
-    - hosts:
-      - argocd.$INGRESS_HOST.nip.io
-      secretName: argo-cert
+
 EOF
 
-
-# Create a secure gateway
-kubectl apply -f - <<EOF
-apiVersion: networking.istio.io/v1alpha3
-kind: Gateway
-metadata:
-  name: argocd-gateway
-  namespace: istio-system
-spec:
-  selector:
-    istio: ingressgateway
-  servers:
-  - hosts:
-    - argocd.$INGRESS_HOST.nip.io
-    port:
-      number: 443
-      name: https
-      protocol: HTTPS
-    tls:
-      mode: SIMPLE
-      credentialName: argo-cert
-EOF
-
-
-kubectl apply -f - <<EOF
-apiVersion: networking.istio.io/v1alpha3
-kind: VirtualService
-metadata:
-  name: argocd-server-vs
-  namespace: argocd
-spec:
-  hosts:
-  - argocd-server
-  gateways:
-  - argocd-gateway
-  tls:
-  - match:
-    - port: 443
-      sniHosts:
-      - argocd-server
-    route:
-    - destination:
-        host: argocd-server
-        port:
-          number: 443
-EOF
+export ARGOCD_PASSWORD=$(kubectl -n argocd get secret argocd-initial-admin-secret -o jsonpath="{.data.password}" | base64 -d; echo)
+echo "Your argocd password is $ARGOCD_PASSWORD"
+echo "export ARGOCD_PASSWORD=$ARGOCD_PASSWORD" >> $BASHRC

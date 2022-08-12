@@ -9,4 +9,8 @@ actions:
         cmd:
           - echo
         args:
-          - "Log from the bar event"
+          - "Log from the bar event. Got $(BAR_VAL) from event.data.foo."
+        env:
+          - name: BAR_VAL
+            value: "$.data.foo"
+            valueFrom: event

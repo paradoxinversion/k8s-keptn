@@ -21,7 +21,12 @@ else
 fi
 
 # Set initial setup variables. We copy them here to .bashrc for easier reuse. Further env vars will be gathered and added to bashrc throughout the run of the script as necessary.
-export BASHRC=~/.bashrc
+RC_FILE=
+if [[ "$INSTALL_SHELL" == "zsh" ]]; then
+  export RC_FILE=~/.bashrc
+elif [[ "$INSTALL_SHELL" == "bash" ]]; then
+  export RC_FILE=~/.bashrc
+
 export KUBECTL_VERSION=1.22.6
 export K8S_VERSION=1.22.6
 
@@ -67,14 +72,14 @@ if [[ "$INSTALL_OS" == "linux" ]]; then
   curl -sfL https://get.k3s.io | INSTALL_K3S_VERSION=v$K8S_VERSION+k3s1 K3S_KUBECONFIG_MODE="644" sh -s - --no-deploy=traefik
   export KUBECONFIG=/etc/rancher/k3s/k3s.yaml
   echo "The k3s kubernetes cluster has been created and is accessible by running: export KUBECONFIG=/etc/rancher/k3s/k3s.yaml"
-  echo "export KUBECONFIG=$KUBECONFIG" >> $BASHRC
+  echo "export KUBECONFIG=$KUBECONFIG" >> $RC_FILE
 else
   K3D_TAG=5.0.0
   curl -s https://raw.githubusercontent.com/k3d-io/k3d/main/install.sh | TAG=v$K3D_TAG bash
 fi
 
-echo "export KUBECTL_VERSION=$KUBECTL_VERSION" >> $BASHRC
-echo "export K8S_VERSION=$K8S_VERSION" >> $BASHRC
+echo "export KUBECTL_VERSION=$KUBECTL_VERSION" >> $RC_FILE
+echo "export K8S_VERSION=$K8S_VERSION" >> $RC_FILE
 
 echo "The next script to run is ./install-helm.sh"
 

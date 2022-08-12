@@ -1,7 +1,7 @@
 #!/bin/bash
 
 ISTIO_VERSION=1.14.1
-if [[ "$INSTALL_ARCH" == "amd64" ]]
+if [[ "$INSTALL_ARCH" == "amd64" ]]; then
   ISTIO_TARGET_ARCH=x86_64
 else
   ISTIO_TARGET_ARCH="$INSTALL_ARCH"

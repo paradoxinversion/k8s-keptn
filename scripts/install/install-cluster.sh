@@ -23,7 +23,7 @@ fi
 # Set initial setup variables. We copy them here to .bashrc for easier reuse. Further env vars will be gathered and added to bashrc throughout the run of the script as necessary.
 RC_FILE=
 if [[ "$INSTALL_SHELL" == "zsh" ]]; then
-  export RC_FILE=~/.bashrc
+  export RC_FILE=~/.zshrc
 elif [[ "$INSTALL_SHELL" == "bash" ]]; then
   export RC_FILE=~/.bashrc
 

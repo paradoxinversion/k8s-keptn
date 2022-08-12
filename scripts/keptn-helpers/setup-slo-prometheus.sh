@@ -1,5 +1,5 @@
 #!/bin/bash
-if [[ -z "$BASHRC" ]]; then
+if [[ -z "$RC_FILE" ]]; then
   echo "You have need to set BASHRC as an env var"
   exit 1
 elif [[ -z "$1" || -z "$2" ]]; then

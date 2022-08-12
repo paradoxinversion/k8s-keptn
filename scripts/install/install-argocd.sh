@@ -51,4 +51,4 @@ EOF
 
 export ARGOCD_PASSWORD=$(kubectl -n argocd get secret argocd-initial-admin-secret -o jsonpath="{.data.password}" | base64 -d; echo)
 echo "Your argocd password is $ARGOCD_PASSWORD"
-echo "export ARGOCD_PASSWORD=$ARGOCD_PASSWORD" >> $BASHRC
+echo "export ARGOCD_PASSWORD=$ARGOCD_PASSWORD" >> $RC_FILE

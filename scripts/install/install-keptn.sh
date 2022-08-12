@@ -5,7 +5,7 @@ KEPTN_DOWNLOAD_FILENAME=keptn-$KEPTN_VERSION-$INSTALL_OS-$INSTALL_ARCH
 # Install Keptn CLI
 # Download the versioned release from github
 # keptn-[version]-[OS]-[arch].tar.gz
-curl -L https://github.com/keptn/keptn/releases/download/$KEPTN_VERSION/$KEPTN_DOWNLOAD_FILENAME.tar.gz
+curl -LO https://github.com/keptn/keptn/releases/download/$KEPTN_VERSION/$KEPTN_DOWNLOAD_FILENAME.tar.gz
 
 # It needs to be unpacked
 tar -x $KEPTN_DOWNLOAD_FILENAME

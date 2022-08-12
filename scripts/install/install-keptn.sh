@@ -9,7 +9,7 @@ echo "Downloading $KEPTN_DOWNLOAD_FILENAME"
 curl -LO https://github.com/keptn/keptn/releases/download/$KEPTN_VERSION/$KEPTN_DOWNLOAD_FILENAME.tar.gz
 
 # It needs to be unpacked
-tar -xf $KEPTN_DOWNLOAD_FILENAME
+tar -xf $KEPTN_DOWNLOAD_FILENAME.tar.gz
 
 # Moved it into our install location
 mv $KEPTN_DOWNLOAD_FILENAME /usr/local/bin/keptn

@@ -8,6 +8,18 @@ chmod 700 ~/get_helm.sh
 echo "Running ./get_helm"
 ~/get_helm.sh
 
+if [[ "$INSTALL_OS" == "linux" && "$INSTALL_SHELL" == "bash" ]]; then
+  source <(helm completion bash)
+  helm completion bash > /etc/bash_completion.d/helm
+elif [[ "$INSTALL_OS" == "darwin" && "$INSTALL_SHELL" == "zsh" ]]; then
+  source <(helm completion zsh)
+  helm completion zsh > "${fpath[1]}/_helm"
+  # helm completion zsh # try uncommenting if there are issues
+elif [[ "$INSTALL_OS" == "darwin" && "$INSTALL_SHELL" == "bash" ]]; then
+  source <(helm completion bash)
+  helm completion bash > /usr/local/etc/bash_completion.d/helm
+fi
+
 echo "The next script to run is ./setup-istio-cli.sh."
 
 if [[ "$SETUP_PROCEED" == 1 ]]; then

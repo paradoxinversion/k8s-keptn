@@ -26,6 +26,7 @@ if [[ "$INSTALL_SHELL" == "zsh" ]]; then
   export RC_FILE=~/.zshrc
 elif [[ "$INSTALL_SHELL" == "bash" ]]; then
   export RC_FILE=~/.bashrc
+fi
 
 export KUBECTL_VERSION=1.22.6
 export K8S_VERSION=1.22.6

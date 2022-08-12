@@ -12,7 +12,7 @@ curl -LO https://github.com/keptn/keptn/releases/download/$KEPTN_VERSION/$KEPTN_
 tar -xf $KEPTN_DOWNLOAD_FILENAME.tar.gz
 
 # Moved it into our install location
-mv $KEPTN_DOWNLOAD_FILENAME /usr/local/bin/keptn
+sudo mv $KEPTN_DOWNLOAD_FILENAME /usr/local/bin/keptn
 
 # Use Helm to Install Keptn 
 echo "Installing Keptn into the cluster"

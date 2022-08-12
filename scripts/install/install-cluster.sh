@@ -1,6 +1,11 @@
 #!/bin/bash
 
-export INSTALL_ARCH="$(uname -i)" # ie, x86_64, arm64
+UNAME_ARCH_RESULT="$(uname -m)"
+if [[ "$UNAME_ARCH_RESULT" == "x86_64" ]]; then
+  UNAME_ARCH_RESULT="amd64"
+fi
+
+export INSTALL_ARCH="$UNAME_ARCH_RESULT" # ie, x86_64, arm64
 export INSTALL_OS="$(uname | tr '[:upper:]' '[:lower:]')" # ie, darwin, linux
 export INSTALL_SHELL=$(echo $SHELL | grep --only-matching "bash\|zsh") # ie, bash, zsh
 
@@ -58,9 +63,6 @@ else
       echo "Your bash version appears to be lower than 4.1. Skipping Kubectl autocompletion"
       echo "See details at: https://kubernetes.io/docs/tasks/tools/install-kubectl-macos/#enable-shell-autocompletion"
     fi
-    MAJOR_VERSION="$(echo ${DARWIN_BASH_VERSION:0:1})"
-    MINOR_VERSION="$(echo ${DARWIN_BASH_VERSION:0:3})"
-    # TODO: Aditional checking for proper version
   elif [[ "$INSTALL_SHELL" == "zsh" ]]; then
     source <(kubectl completion zsh)
     echo "source <(kubectl completion zsh)"

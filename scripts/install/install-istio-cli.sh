@@ -14,7 +14,7 @@ echo "Sleeping for 10 seconds"
 sleep 10s
 
 echo "export ISTIO_VERSION=$ISTIO_VERSION" >> $RC_FILE
-echo "export LINUX_ARCHITECTURE=$LINUX_ARCHITECTURE" >> $RC_FILE
+echo "export LINUX_ARCHITECTURE=$INSTALL_ARCH" >> $RC_FILE
 echo "export ISTIOCTL=${ISTIOCTL}" >> $RC_FILE
 
 echo "The next script to run is ./install-keptn.sh"

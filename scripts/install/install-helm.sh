@@ -10,7 +10,7 @@ echo "Running ./get_helm"
 
 if [[ "$INSTALL_OS" == "linux" && "$INSTALL_SHELL" == "bash" ]]; then
   source <(helm completion bash)
-  helm completion bash > /etc/bash_completion.d/helm
+  sudo helm completion bash > /etc/bash_completion.d/helm
 elif [[ "$INSTALL_OS" == "darwin" && "$INSTALL_SHELL" == "zsh" ]]; then
   source <(helm completion zsh)
   helm completion zsh > "${fpath[1]}/_helm"

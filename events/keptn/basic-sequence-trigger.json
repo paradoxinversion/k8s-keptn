@@ -1,0 +1,12 @@
+{
+  "data": {
+    "project": "demo",
+    "service": "demo-svc",
+    "stage": "dev",
+    "foo": "bar"
+  },
+  "source": "https://github.com/keptn/keptn/cli#configuration-change",
+  "specversion": "1.0",
+  "type": "sh.keptn.event.dev.foo.triggered",
+  "shkeptnspecversion": "0.2.3"
+}
